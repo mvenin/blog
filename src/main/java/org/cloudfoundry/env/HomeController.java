@@ -9,16 +9,21 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.validation.ValidationException;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,14 +38,27 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
+	@Autowired
+	private SprValidator sprValidator;
+	
+	private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 	
 	@RequestMapping(value = "signup", method = RequestMethod.POST, consumes=APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public String signup(@Valid @ModelAttribute SignupForm signupForm, Errors errors, RedirectAttributes ra) {
-		if (errors.hasErrors()) {
-			return errors.toString() ;
+	public String signup(  @ModelAttribute SignupForm signupForm, Errors errors, RedirectAttributes ra) {
+//		Errors e2 = new BeanPropertyBindingResult(signupForm, "signupForm");
+		//this.sprValidator.validate(signupForm, e2);
+		
+		Set<ConstraintViolation<SignupForm>> constraintViolations=null;
+		int i = 1;
+		if(i == 1){
+			constraintViolations  = validator.validate(signupForm, javax.validation.groups.Default.class, PrmFileConstraintValidator.Step1.class);
+		} else {
+				constraintViolations  = validator.validate(signupForm, javax.validation.groups.Default.class, PrmFileConstraintValidator.Step2.class);
 		}
-		return "{}";
+		System.out.println(constraintViolations);
+		return  constraintViolations.toString().replaceAll("ConstraintViolationImpl", "\nConstraintViolationImpl");
+		
 	}
 	
 	/**
