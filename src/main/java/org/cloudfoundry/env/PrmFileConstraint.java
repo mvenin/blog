@@ -14,9 +14,8 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-//@NotNull
+@NotNull
 //@Size(min = 2, max = 14)
 @Target({ TYPE, METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
@@ -25,7 +24,7 @@ import javax.validation.constraints.Size;
 @ReportAsSingleViolation
 public @interface PrmFileConstraint {
 
-	String message() default "{com.mycompany.constraints.validlicenseplate}";
+	String message() default "{field.invalid}";
 
 	Class<?>[] groups() default {};
 

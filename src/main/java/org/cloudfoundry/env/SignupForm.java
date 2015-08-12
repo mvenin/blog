@@ -2,30 +2,38 @@ package org.cloudfoundry.env;
 
 import org.hibernate.validator.constraints.*;
 
-@PrmFileConstraint()
+@PrmFileConstraint(groups={SignupForm.Step1.class, SignupForm.Step2.class})
 public class SignupForm {
+	public final class Step1 {}
 
-	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
-	private static final String EMAIL_MESSAGE = "{email.message}";
-
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-	@Email(message = SignupForm.EMAIL_MESSAGE)
+	public interface Step2 {}
+	
+    @NotBlank(message = "{car.notBlankX}")
 	private String email;
 
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+    @NotBlank(message = "{car.notBlankX}")
 	private String password;
     
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE, groups=PrmFileConstraintValidator.Step1.class)
+    @PrmFileConstraint()
+    @NotBlank(message = "{car.notBlankX}", groups=Step1.class)
     private String fieldStep1a;
     
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE, groups=PrmFileConstraintValidator.Step1.class)
+    @PrmFileConstraint()
+    @NotBlank(message = "{org.cloudfoundry.env.notBlankX}", groups=Step1.class)
     private String fieldStep1b;
     
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE, groups=PrmFileConstraintValidator.Step2.class)
+    @NotBlank(message = "{car.notBlankX}", groups=Step2.class)
     private String fieldStep2a;
     
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE, groups=PrmFileConstraintValidator.Step2.class)
+    @NotBlank(message = "{car.notBlankX}", groups=Step2.class)
     private String fieldStep2b;
+    
+    @PrmFileConstraint(groups={Step1.class})
+    private String fieldStep3;
+    
+    
+    
+    
 
     public String getEmail() {
 		return email;
