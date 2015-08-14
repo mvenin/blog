@@ -13,12 +13,6 @@ public class PrmFileConstraintValidator implements ConstraintValidator<PrmFileCo
 		System.out.println(this.hashCode());
 	}
 
-	public interface Step1 {
-	}
-
-	public interface Step2 {
-	}
-
 	public void initialize(PrmFileConstraint ca) {
 		groups = ca.groups();
 		payload = ca.payload();
@@ -29,6 +23,8 @@ public class PrmFileConstraintValidator implements ConstraintValidator<PrmFileCo
 		if (val instanceof SignupForm) {
 			form = (SignupForm) val;
 
+			context.buildConstraintViolationWithTemplate("{class.level.validation}").addConstraintViolation();
+			
 			if (isStep1()) {
 				if (form.getFieldStep1a() == null) {
 					context.buildConstraintViolationWithTemplate("{org.cloudfoundry.env.notBlankX}").addNode("fieldStep1a")
@@ -49,7 +45,7 @@ public class PrmFileConstraintValidator implements ConstraintValidator<PrmFileCo
 			return false;
 		} else {
 			for (Class<?> gr : groups) {
-				if (gr.isAssignableFrom(Step2.class)) {
+				if (gr.isAssignableFrom(SignupForm.S2.class)) {
 					return true;
 				}
 			}
@@ -59,7 +55,7 @@ public class PrmFileConstraintValidator implements ConstraintValidator<PrmFileCo
 
 	private boolean isStep1() {
 		for (Class<?> gr : groups) {
-			if (gr.isAssignableFrom(Step1.class)) {
+			if (gr.isAssignableFrom(SignupForm.S1.class)) {
 				return true;
 			}
 		}

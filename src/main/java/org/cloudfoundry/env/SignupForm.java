@@ -1,41 +1,46 @@
 package org.cloudfoundry.env;
 
-import org.hibernate.validator.constraints.*;
+import javax.validation.constraints.NotNull;
 
-@PrmFileConstraint(groups={SignupForm.Step1.class, SignupForm.Step2.class})
-public class SignupForm {
-	public final class Step1 {}
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
-	public interface Step2 {}
-	
-    @NotBlank(message = "{car.notBlankX}")
+@PrmFileConstraint
+public class SignupForm extends BaseForm {
+	public interface S1 {
+	}
+
+	public interface S1g1 {
+	}
+
+	public interface S2 {
+	}
+
+	public interface S2g1 {
+	}
+
+	private int type;
+
+	@NotNull
+	@Email
 	private String email;
 
-    @NotBlank(message = "{car.notBlankX}")
+	@NotBlank(message = "{car.notBlankX}")
 	private String password;
-    
-    @PrmFileConstraint()
-    @NotBlank(message = "{car.notBlankX}", groups=Step1.class)
-    private String fieldStep1a;
-    
-    @PrmFileConstraint()
-    @NotBlank(message = "{org.cloudfoundry.env.notBlankX}", groups=Step1.class)
-    private String fieldStep1b;
-    
-    @NotBlank(message = "{car.notBlankX}", groups=Step2.class)
-    private String fieldStep2a;
-    
-    @NotBlank(message = "{car.notBlankX}", groups=Step2.class)
-    private String fieldStep2b;
-    
-    @PrmFileConstraint(groups={Step1.class})
-    private String fieldStep3;
-    
-    
-    
-    
 
-    public String getEmail() {
+	@NotBlank(message = "{car.notBlankX}", groups = { S1.class, S1g1.class })
+	private String fieldStep1a;
+
+	@NotBlank(message = "{env.notBlankX}", groups = { S1g1.class })
+	private String fieldStep1b;
+
+	@NotBlank(message = "{car.notBlankX}", groups = { S2.class, S2g1.class })
+	private String fieldStep2a;
+
+	@NotBlank(message = "{car.notBlankX}", groups = S2g1.class)
+	private String fieldStep2b;
+
+	public String getEmail() {
 		return email;
 	}
 
@@ -83,5 +88,12 @@ public class SignupForm {
 		this.fieldStep2b = fieldStep2b;
 	}
 
-	
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
 }

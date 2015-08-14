@@ -17,7 +17,7 @@ public class ValidationTest {
 		SignupForm signupForm = new SignupForm();
 
 		Set<ConstraintViolation<SignupForm>> constraintViolations = validator.validate(signupForm,
-				javax.validation.groups.Default.class, PrmFileConstraintValidator.Step1.class);
+				javax.validation.groups.Default.class, SignupForm.Step1.class);
 
 		for (ConstraintViolation<SignupForm> cv : constraintViolations) {
 			System.out.println(cv.getMessage() + "\t" + cv);

@@ -66,13 +66,13 @@ public class HomeController {
 	@ResponseBody
 	public String signup(   @ModelAttribute SignupForm signupForm, Errors errors, RedirectAttributes ra) {
 		Errors e2 = new BeanPropertyBindingResult(signupForm, "signupForm");
-		Set<ConstraintViolation<SignupForm>> constraintViolations= this.sprValidator.validate(signupForm, javax.validation.groups.Default.class, PrmFileConstraintValidator.Step1.class); //Collections.emptySet();// 
+		Set<ConstraintViolation<SignupForm>> constraintViolations= this.sprValidator.validate(signupForm, javax.validation.groups.Default.class, SignupForm.S1.class); //Collections.emptySet();// 
 		System.out.println(e2);
 		
 //		Set<ConstraintViolation<SignupForm>> constraintViolations=null;
 		int i = 10;
 		if(i == 1){
-			constraintViolations  = validator.validate(signupForm, javax.validation.groups.Default.class, PrmFileConstraintValidator.Step1.class);
+			constraintViolations  = validator.validate(signupForm, javax.validation.groups.Default.class, SignupForm.S1.class);
 		} else {
 //			constraintViolations  = validator.validate(signupForm, javax.validation.groups.Default.class, PrmFileConstraintValidator.Step2.class);
 		}
